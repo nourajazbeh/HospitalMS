@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: nodejs-app
+  labels:
+    app: nodejs-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-app
+          image: nooura
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: "mongo-service"
+            - name: DB_PORT
+              value: "27017"
+            - name: DB_DATABASE
+              value: "my_database"
+            - name: DB_USER
+              value: "admin"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD

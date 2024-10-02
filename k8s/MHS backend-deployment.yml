@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhs-backend-deployment
+  labels:
+    app: mhs-app
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mhs-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: mhs-app
+        tier: backend
+    spec:
+      containers:
+        - name: backend
+          image: nourajaz/backend-image:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URI
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET

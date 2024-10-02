@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .  
+      dockerfile: Dockerfile  
+    volumes:
+      - .:/usr/src/app  
+      - /usr/src/app/node_modules  
+    ports:
+      - 8000:8000  
+    environment:
+      - DB_HOST=mongodb  
+      - DB_DATABASE=DB  
+      - DB_PORT=27017  
+    depends_on:
+      - mongodb  
+  mongodb:
+    image: mongo:latest  
+    volumes:
+      - mongo_data:/data/db  
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root  
+      - MONGO_INITDB_ROOT_PASSWORD=DB 
+      - MONGO_INITDB_DATABASE=DB 
+    ports:
+      - 27017:27017  
+
+volumes:
+  mongo_data: 

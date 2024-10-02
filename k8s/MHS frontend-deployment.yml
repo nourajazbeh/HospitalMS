@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mhs-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mhs-frontend
+      tier: frontend   
+  template:
+    metadata:
+      labels:
+        app: mhs-frontend
+        tier: frontend   
+    spec:
+      containers:
+        - name: frontend
+          image: nourajaz/frontend-image:latest
+          ports:
+            - containerPort: 80
